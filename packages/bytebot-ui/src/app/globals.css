@@ -48,7 +48,7 @@
   --color-bytebot-white: rgba(255, 255, 255, 1);
   --color-bytebot-transparent: rgba(255, 255, 255, 0);
   --color-bytebot-black: rgba(0, 0, 0, 1);
-  
+
   /* Bronze light */
   --color-bytebot-bronze-light-1: rgba(251, 249, 249, 1);
   --color-bytebot-bronze-light-2: rgba(246, 244, 244, 1);
@@ -100,7 +100,7 @@
   --color-bytebot-bronze-dark-a10: rgba(253, 231, 227, 0.48627451062202454);
   --color-bytebot-bronze-dark-a11: rgba(254, 241, 238, 0.7176470756530762);
   --color-bytebot-bronze-dark-a12: rgba(255, 254, 253, 0.9333333373069763);
-  
+
   /* Red light */
   --color-bytebot-red-light-9: rgba(229, 72, 77, 1);
   --color-bytebot-red-light-1: rgba(255, 252, 252, 1);
@@ -114,7 +114,7 @@
   --color-bytebot-red-light-10: rgba(220, 62, 66, 1);
   --color-bytebot-red-light-11: rgba(206, 44, 49, 1);
   --color-bytebot-red-light-12: rgba(100, 23, 35, 1);
-  
+
   /* Red dark */
   --color-bytebot-red-dark-1: rgba(23, 15, 14, 1);
   --color-bytebot-red-dark-2: rgba(32, 19, 18, 1);
@@ -128,7 +128,7 @@
   --color-bytebot-red-dark-10: rgba(230, 86, 91, 1);
   --color-bytebot-red-dark-11: rgba(255, 143, 139, 1);
   --color-bytebot-red-dark-12: rgba(255, 210, 206, 1);
-  
+
   /* Green */
   --color-bytebot-green-3: rgba(232, 247, 228, 1);
   --color-bytebot-green-4: rgba(218, 242, 211, 1);
@@ -162,7 +162,7 @@
   --letter-spacing-narrow: -0.01em;
 
   /* Shadow */
-  --shadow-bytebot: 0px 0px 0px 1.5px #FFF inset;
+  --shadow-bytebot: 0px 0px 0px 1.5px #fff inset;
 }
 
 :root {

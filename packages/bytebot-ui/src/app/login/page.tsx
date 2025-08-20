@@ -63,18 +63,18 @@ export default function LoginPage() {
           <div className="mb-4 flex justify-center">
             <Image
               src="/bytebot_square_light.svg"
-              alt="Bytebot"
+              alt="Mybot"
               width={64}
               height={64}
               className="h-12 w-12"
             />
           </div>
           <h2 className="text-2xl font-bold text-gray-900">
-            {isSignUp ? "Create your account" : "Sign in to Bytebot"}
+            {isSignUp ? "Create your account" : "Sign in to Mybot"}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             {isSignUp
-              ? "Join Bytebot to start automating your tasks"
+              ? "Join Mybot to start automating your tasks"
               : "Welcome back! Please sign in to continue"}
           </p>
         </div>

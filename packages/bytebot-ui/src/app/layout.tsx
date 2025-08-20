@@ -7,8 +7,8 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Bytebot",
-  description: "Bytebot is the container for desktop agents.",
+  title: "Mybot",
+  description: "Mybot is the container for desktop agents.",
 };
 
 export default function RootLayout({

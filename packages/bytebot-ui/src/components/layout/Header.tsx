@@ -70,7 +70,7 @@ export function Header() {
                   ? "/bytebot_transparent_logo_white.svg"
                   : "/bytebot_transparent_logo_dark.svg"
               }
-              alt="Bytebot Logo"
+              alt="Mybot Logo"
               width={100}
               height={30}
               className="h-8 w-auto"
@@ -108,17 +108,23 @@ export function Header() {
         {session && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                <HugeiconsIcon icon={User03Icon} className="w-4 h-4" />
-                <span className="text-sm">{session.user.name || session.user.email}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+              >
+                <HugeiconsIcon icon={User03Icon} className="h-4 w-4" />
+                <span className="text-sm">
+                  {session.user.name || session.user.email}
+                </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem 
-                onClick={() => signOut()} 
+              <DropdownMenuItem
+                onClick={() => signOut()}
                 className="flex items-center gap-2 text-red-600"
               >
-                <HugeiconsIcon icon={Logout01Icon} className="w-4 h-4" />
+                <HugeiconsIcon icon={Logout01Icon} className="h-4 w-4" />
                 Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>

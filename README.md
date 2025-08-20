@@ -35,7 +35,7 @@ When AI has access to a complete desktop environment, it unlocks capabilities th
 
 ### Complete Task Autonomy
 
-Give Bytebot a task like "Download all invoices from our vendor portals and organize them by date" and it will:
+Give Mybot a task like "Download all invoices from our vendor portals and organize them by date" and it will:
 
 - Open the browser
 - Navigate to each portal

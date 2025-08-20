@@ -7,10 +7,7 @@ interface LoaderProps {
   className?: string;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ 
-  size = 16, 
-  className 
-}) => {
+export const Loader: React.FC<LoaderProps> = ({ size = 16, className }) => {
   return (
     <Image
       src="/loader.svg"
@@ -20,4 +17,4 @@ export const Loader: React.FC<LoaderProps> = ({
       className={cn("animate-spin", className)}
     />
   );
-}; 
+};

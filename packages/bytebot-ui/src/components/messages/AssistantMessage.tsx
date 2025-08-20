@@ -18,10 +18,11 @@ export function AssistantMessage({
   messageIdToIndex,
 }: AssistantMessageProps) {
   return (
-    <div className={
-      cn(
-        "bg-bytebot-bronze-light-3 flex items-start justify-start gap-2 px-4 py-3 border-x border-bytebot-bronze-light-7",
-        ![TaskStatus.RUNNING, TaskStatus.NEEDS_HELP].includes(taskStatus) && "border-b border-bytebot-bronze-light-7 rounded-b-lg"
+    <div
+      className={cn(
+        "bg-bytebot-bronze-light-3 border-bytebot-bronze-light-7 flex items-start justify-start gap-2 border-x px-4 py-3",
+        ![TaskStatus.RUNNING, TaskStatus.NEEDS_HELP].includes(taskStatus) &&
+          "border-bytebot-bronze-light-7 rounded-b-lg border-b",
       )}
     >
       <MessageAvatar role={group.role} />
