@@ -1,8 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <g clip-path="url(#clip0_3461_3452)">
-    <path d="M14.0891 11.2121L8.16934 14.2585V7.6894L14.0891 4.53173V11.2121ZM14.9761 3.40795L8.24606 0.059906C8.0781 -0.0236444 7.87672 -0.0196629 7.71249 0.0704374L1.00433 3.75225C0.833025 3.84633 0.727539 4.02007 0.727539 4.20815V11.5835C0.727539 11.7716 0.833025 11.9454 1.00433 12.0394L7.72338 15.7272C7.89478 15.8211 8.10575 15.8211 8.27715 15.7272L14.9962 12.0394C15.1675 11.9454 15.273 11.7716 15.273 11.5835V3.8743C15.273 3.67843 15.1586 3.49876 14.9761 3.40795Z" fill="#202020"/>
-    <path d="M10.7905 8.35128L9.71191 8.9434V11.6343L10.7905 11.0423V8.35128Z" fill="#202020"/>
-    <path d="M13.1587 7.06524L12.0801 7.65735V10.3481L13.1587 9.75621V7.06524Z" fill="#202020"/>
+    <g clip-path="url(#clip0_3461_3452)">
+    <!-- Ears -->
+    <circle cx="3.5" cy="8.25" r="1.4" fill="#1F2A37" stroke="#0D1117" stroke-width="0.6"/>
+    <circle cx="12.5" cy="8.25" r="1.4" fill="#1F2A37" stroke="#0D1117" stroke-width="0.6"/>
+
+    <!-- Head -->
+    <circle cx="8" cy="8.25" r="4.5" fill="#2F3B47" stroke="#0D1117" stroke-width="0.6"/>
+
+    <!-- Antenna -->
+    <line x1="8" y1="4" x2="8" y2="2.8" stroke="#0D1117" stroke-width="0.6" stroke-linecap="round"/>
+    <circle cx="8" cy="2.2" r="0.8" fill="#0D1117"/>
+
+    <!-- Eyes -->
+    <circle cx="6.8" cy="8.2" r="0.5" fill="#FFFFFF"/>
+    <circle cx="9.2" cy="8.2" r="0.5" fill="#FFFFFF"/>
+
+    <!-- Smile -->
+    <path d="M6.7 9.2 Q8 10.2 9.3 9.2" stroke="#FFFFFF" stroke-width="0.6" stroke-linecap="round" fill="none"/>
   </g>
   <defs>
     <clipPath id="clip0_3461_3452">
@@ -10,3 +24,4 @@
     </clipPath>
   </defs>
 </svg>
+

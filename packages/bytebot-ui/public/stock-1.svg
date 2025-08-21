@@ -1,0 +1,142 @@
+<!-- AI bot automation animation – 1365 × 2048, white background -->
+<svg width="1365" height="2048" viewBox="0 0 1365 2048" fill="none"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <title>AI bot automation</title>
+
+  <!-- ================== Defs ================== -->
+  <defs>
+    <!-- Subtle background grid (very light on white) -->
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" stroke="#E5E7EB" stroke-width="1"/>
+    </pattern>
+
+    <!-- Soft glow for accents -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Conveyor travel path -->
+    <path id="beltPath" d="M160 1500 H1205" />
+
+    <!-- Signal paths (bot → belt) -->
+    <path id="pLeft"  d="M540 1060 C 420 1220, 300 1360, 220 1470" />
+    <path id="pMid"   d="M682.5 1060 C 682.5 1240, 682.5 1380, 682.5 1470" />
+    <path id="pRight" d="M825 1060 C 945 1220, 1065 1360, 1145 1470" />
+  </defs>
+
+  <!-- ================== Background ================== -->
+  <rect width="1365" height="2048" fill="white"/>
+  <rect width="1365" height="2048" fill="url(#grid)" opacity="0.18"/>
+
+  <!-- ================== Bot (friendly head) ================== -->
+  <g id="bot" transform="translate(682.5,820)">
+    <!-- gentle float -->
+    <animateTransform attributeName="transform" type="translate"
+      values="682.5,820; 682.5,800; 682.5,820" dur="3s" repeatCount="indefinite"/>
+
+    <!-- ears behind -->
+    <circle cx="-220" cy="0" r="50" fill="#2F3B47"/>
+    <circle cx="220"  cy="0" r="50" fill="#2F3B47"/>
+
+    <!-- antenna -->
+    <line x1="0" y1="-240" x2="0" y2="-300" stroke="#1F2A37" stroke-width="22" stroke-linecap="round"/>
+    <circle cx="0" cy="-330" r="24" fill="#1F2A37">
+      <animate attributeName="opacity" values="1;0.35;1" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- head -->
+    <circle cx="0" cy="0" r="220" fill="#E7ECF1" stroke="#1F2A37" stroke-width="32"/>
+
+    <!-- face -->
+    <circle cx="-65" cy="-18" r="20" fill="#1F2A37"/>
+    <circle cx=" 65" cy="-18" r="20" fill="#1F2A37"/>
+    <path d="M-85,55 Q0,115 85,55" stroke="#1F2A37" stroke-width="26" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Rotating status rings -->
+  <g transform="translate(682.5,820)" filter="url(#glow)" opacity="0.7">
+    <g>
+      <circle r="290" fill="none" stroke="#0EA5E9" stroke-width="8" stroke-dasharray="20 16"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/>
+    </g>
+    <g>
+      <circle r="340" fill="none" stroke="#22C55E" stroke-width="8" stroke-dasharray="18 18"/>
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="14s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <!-- ================== Automation wiring ================== -->
+  <path d="M560 1040 C 470 1180, 330 1310, 220 1470" stroke="#CBD5E1" stroke-width="6" fill="none"/>
+  <path d="M682.5 1040 C 682.5 1210, 682.5 1350, 682.5 1470" stroke="#CBD5E1" stroke-width="6" fill="none"/>
+  <path d="M805 1040 C 895 1180, 1035 1310, 1145 1470" stroke="#CBD5E1" stroke-width="6" fill="none"/>
+
+  <!-- moving pulses along the wires -->
+  <circle r="7" fill="#0EA5E9" filter="url(#glow)">
+    <animateMotion dur="2.6s" repeatCount="indefinite" rotate="auto">
+      <mpath xlink:href="#pLeft"/>
+    </animateMotion>
+  </circle>
+  <circle r="7" fill="#22C55E" filter="url(#glow)">
+    <animateMotion dur="2.2s" repeatCount="indefinite" rotate="auto">
+      <mpath xlink:href="#pMid"/>
+    </animateMotion>
+  </circle>
+  <circle r="7" fill="#F59E0B" filter="url(#glow)">
+    <animateMotion dur="2.4s" begin="0.5s" repeatCount="indefinite" rotate="auto">
+      <mpath xlink:href="#pRight"/>
+    </animateMotion>
+  </circle>
+
+  <!-- ================== Conveyor ================== -->
+  <!-- belt base -->
+  <rect x="120" y="1460" width="1125" height="120" rx="28" fill="#111827" opacity="0.9"/>
+  <!-- dashed track -->
+  <rect x="150" y="1506" width="1065" height="32" rx="16" fill="none" stroke="#9CA3AF" stroke-width="32"
+        stroke-dasharray="40 60" opacity="0.55">
+    <animate attributeName="stroke-dashoffset" from="0" to="-400" dur="2.4s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- boxes traveling on belt -->
+  <g fill="#F8FAFC" stroke="#1F2937" stroke-width="8">
+    <rect width="150" height="110" rx="12">
+      <animateMotion dur="6s" repeatCount="indefinite" rotate="auto">
+        <mpath xlink:href="#beltPath"/>
+      </animateMotion>
+    </rect>
+    <rect width="150" height="110" rx="12">
+      <animateMotion dur="6s" begin="1s" repeatCount="indefinite" rotate="auto">
+        <mpath xlink:href="#beltPath"/>
+      </animateMotion>
+    </rect>
+    <rect width="150" height="110" rx="12">
+      <animateMotion dur="6s" begin="2s" repeatCount="indefinite" rotate="auto">
+        <mpath xlink:href="#beltPath"/>
+      </animateMotion>
+    </rect>
+  </g>
+
+  <!-- completion ticks -->
+  <g stroke="#16A34A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+    <path d="M260 1555 l24 24 l42 -42" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="2.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M682.5 1555 l24 24 l42 -42" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;0" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M1105 1555 l24 24 l42 -42" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;0" dur="3.4s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- caption -->
+  <text x="682.5" y="1900" fill="#334155"
+        font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif"
+        font-size="42" text-anchor="middle">
+    AI bot automation in progress…
+  </text>
+</svg>

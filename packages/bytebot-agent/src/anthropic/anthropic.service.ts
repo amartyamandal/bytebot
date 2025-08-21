@@ -24,9 +24,17 @@ import {
 export class AnthropicService implements BytebotAgentService {
   private readonly anthropic: Anthropic;
   private readonly logger = new Logger(AnthropicService.name);
+  private readonly maxRetries: number;
+  private readonly baseRetryDelayMs: number;
 
   constructor(private readonly configService: ConfigService) {
     const apiKey = this.configService.get<string>('ANTHROPIC_API_KEY');
+    this.maxRetries = Number(
+      this.configService.get<string>('ANTHROPIC_MAX_RETRIES') ?? '5',
+    );
+    this.baseRetryDelayMs = Number(
+      this.configService.get<string>('ANTHROPIC_RETRY_BASE_MS') ?? '500',
+    );
 
     if (!apiKey) {
       this.logger.warn(
@@ -57,23 +65,27 @@ export class AnthropicService implements BytebotAgentService {
         type: 'ephemeral',
       };
 
-      // Make the API call
-      const response = await this.anthropic.messages.create(
-        {
-          model,
-          max_tokens: maxTokens * 2,
-          thinking: { type: 'disabled' },
-          system: [
+      // Make the API call with retry for transient errors (e.g. 529 overloaded)
+      const response = await this.executeWithRetry(
+        async () =>
+          this.anthropic.messages.create(
             {
-              type: 'text',
-              text: systemPrompt,
-              cache_control: { type: 'ephemeral' },
+              model,
+              max_tokens: maxTokens * 2,
+              thinking: { type: 'disabled' },
+              system: [
+                {
+                  type: 'text',
+                  text: systemPrompt,
+                  cache_control: { type: 'ephemeral' },
+                },
+              ],
+              messages: anthropicMessages,
+              tools: useTools ? anthropicTools : [],
             },
-          ],
-          messages: anthropicMessages,
-          tools: useTools ? anthropicTools : [],
-        },
-        { signal },
+            { signal },
+          ),
+        'messages.create',
       );
 
       // Convert Anthropic's response to our message content blocks format
@@ -99,6 +111,71 @@ export class AnthropicService implements BytebotAgentService {
       );
       throw error;
     }
+  }
+
+  /**
+   * Generic retry helper with exponential backoff + jitter for transient Anthropic errors.
+   * Retries on: HTTP/SDK status 408/429/500/502/503/504/529, anthropic overloaded_error / rate_limit_error.
+   */
+  private async executeWithRetry<T>(
+    fn: () => Promise<T>,
+    context: string,
+  ): Promise<T> {
+    let attempt = 0;
+    let lastError: any;
+    while (attempt <= this.maxRetries) {
+      try {
+        if (attempt > 0) {
+          this.logger.debug(
+            `Retrying Anthropic ${context} attempt ${attempt}/${this.maxRetries}`,
+          );
+        }
+        return await fn();
+      } catch (err: any) {
+        lastError = err;
+        const { retryable, reason } = this.isRetryableAnthropicError(err);
+        if (!retryable || attempt === this.maxRetries) {
+          if (retryable) {
+            this.logger.error(
+              `Anthropic ${context} failed after ${attempt} retries: ${reason}: ${err.message}`,
+            );
+          }
+          break;
+        }
+        const delay = this.computeBackoffDelay(attempt);
+        this.logger.warn(
+          `Transient Anthropic error (${reason}) on ${context}: ${err.message} | waiting ${delay}ms before retry ${attempt + 1}`,
+        );
+        await this.delay(delay);
+        attempt++;
+      }
+    }
+    throw lastError;
+  }
+
+  private isRetryableAnthropicError(error: any): { retryable: boolean; reason: string } {
+    // Anthropic SDK error may have status / error fields
+    const status = error?.status || error?.response?.status;
+    const errorType = error?.error?.type || error?.data?.error?.type;
+    if (['overloaded_error', 'rate_limit_error', 'timeout_error'].includes(errorType)) {
+      return { retryable: true, reason: errorType };
+    }
+    if ([408, 409, 425, 429, 500, 502, 503, 504, 529].includes(status)) {
+      return { retryable: true, reason: `http_${status}` };
+    }
+    return { retryable: false, reason: 'non_retryable' };
+  }
+
+  private computeBackoffDelay(attempt: number): number {
+    // attempt 0 = first try (no delay). For retries, start at base * 2^(attempt-1)
+    if (attempt === 0) return 0;
+    const exp = this.baseRetryDelayMs * 2 ** (attempt - 1);
+    const jitter = Math.floor(Math.random() * Math.min(250, this.baseRetryDelayMs));
+    return Math.min(exp + jitter, 15000); // cap at 15s per attempt
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise((res) => setTimeout(res, ms));
   }
 
   /**
