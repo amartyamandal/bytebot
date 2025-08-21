@@ -84,6 +84,8 @@ echo "ANTHROPIC_API_KEY=sk-ant-..." > docker/.env
 # Or: echo "GEMINI_API_KEY=..." > docker/.env
 
 docker compose -f docker/docker-compose.yml up -d
+OR
+docker compose -f docker/docker-compose.local.yml up -d 
 
 # Open http://localhost:9992
 ```
