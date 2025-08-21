@@ -272,6 +272,7 @@ We welcome contributions! Whether it's:
 - ✨ New features
 - 📚 Documentation improvements
 - 🌐 Translations
+- Would like to add video meet
 
 Please:
 
