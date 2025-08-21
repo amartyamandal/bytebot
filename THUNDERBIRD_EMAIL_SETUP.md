@@ -129,25 +129,60 @@ Following Bytebot's architecture patterns, here are three elegant approaches to 
 
 ### Approach 1: Environment Variables (Recommended)
 
-**Step 1: Extend Docker Environment Variables**
+**Step 1: Add Email Variables to `docker/.env` File**
 
-```yaml
-# Add to docker-compose.yml or docker-compose.local.yml
-environment:
-  # Email Configuration
-  - BYTEBOT_EMAIL_ADDRESS=assistant@yourcompany.com
-  - BYTEBOT_EMAIL_NAME=Bytebot Assistant
-  - BYTEBOT_EMAIL_PROVIDER=gmail  # gmail, outlook, exchange, generic
-  - BYTEBOT_SMTP_HOST=smtp.gmail.com
-  - BYTEBOT_SMTP_PORT=587
-  - BYTEBOT_IMAP_HOST=imap.gmail.com
-  - BYTEBOT_IMAP_PORT=993
-  - BYTEBOT_EMAIL_PASSWORD_FILE=/run/secrets/email_password
-  # or
-  - BYTEBOT_EMAIL_PASSWORD=your_app_password_here
+Following Bytebot's existing pattern (like API keys), add email configuration to the `.env` file:
+
+```properties
+# File: docker/.env
+# Existing API keys...
+ANTHROPIC_API_KEY=sk-ant-api03-...
+OPENAI_API_KEY=sk-proj-...
+GEMINI_API_KEY=AIzaSyC...
+
+# Email Configuration (ADD THESE)
+BYTEBOT_EMAIL_ADDRESS=assistant@yourcompany.com
+BYTEBOT_EMAIL_NAME=Bytebot Assistant
+BYTEBOT_EMAIL_PROVIDER=gmail
+BYTEBOT_SMTP_HOST=smtp.gmail.com
+BYTEBOT_SMTP_PORT=587
+BYTEBOT_IMAP_HOST=imap.gmail.com
+BYTEBOT_IMAP_PORT=993
+BYTEBOT_EMAIL_PASSWORD=your_app_password_here
 ```
 
-**Step 2: Create Email Configuration Service**
+**Step 2: Update Docker Compose Configuration**
+
+Add environment variables to the `bytebot-desktop` service in `docker-compose.local.yml`:
+
+```yaml
+# File: docker/docker-compose.local.yml
+services:
+  bytebot-desktop:
+    # ... existing configuration
+    environment:
+      - DISPLAY=:0
+      # Add email configuration variables (automatically loaded from docker/.env)
+      - BYTEBOT_EMAIL_ADDRESS=${BYTEBOT_EMAIL_ADDRESS}
+      - BYTEBOT_EMAIL_NAME=${BYTEBOT_EMAIL_NAME}
+      - BYTEBOT_EMAIL_PROVIDER=${BYTEBOT_EMAIL_PROVIDER}
+      - BYTEBOT_SMTP_HOST=${BYTEBOT_SMTP_HOST}
+      - BYTEBOT_SMTP_PORT=${BYTEBOT_SMTP_PORT}
+      - BYTEBOT_IMAP_HOST=${BYTEBOT_IMAP_HOST}
+      - BYTEBOT_IMAP_PORT=${BYTEBOT_IMAP_PORT}
+      - BYTEBOT_EMAIL_PASSWORD=${BYTEBOT_EMAIL_PASSWORD}
+```
+
+> **✅ Confirmed**: Docker Compose automatically loads variables from `docker/.env` file, following the exact same pattern as existing API keys (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY).
+
+> **🎯 Why This Approach is Recommended:**
+> - ✅ **Follows Bytebot's existing patterns** - Same approach as API key management
+> - ✅ **Secure by default** - `.env` files are typically git-ignored
+> - ✅ **No container rebuilds needed** - Environment variables only
+> - ✅ **Easy to manage** - All configuration in one place (`docker/.env`)
+> - ✅ **Consistent across services** - Same pattern for all Bytebot components
+
+**Step 3: Create Email Configuration Service**
 
 ```typescript
 // New file: packages/bytebotd/src/email/email-config.service.ts
