@@ -66,7 +66,9 @@ RUN apt-get update && apt-get install -y \
     # Set Firefox as default browser system-wide
     && update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox-esr 200 \
     && update-alternatives --set x-www-browser /usr/bin/firefox-esr \
-    && fc-cache -f -v
+    && fc-cache -f -v \
+    # Prevent Thunderbird auto-start on XFCE session (remove autostart desktop file if present)
+    && rm -f /etc/xdg/autostart/thunderbird.desktop || true
 
 
 # Install 1Password based on architecture
@@ -223,6 +225,9 @@ RUN chown -R root:root /bytebot/bytebotd/root && \
     find /bytebot/bytebotd/root -type f -executable -exec chmod +x {} + && \
     cp -a /bytebot/bytebotd/root/. /
 
+# Ensure one-time Thunderbird setup script is executable (if not caught above)
+RUN chmod +x /usr/local/bin/one-time-thunderbird-setup.sh || true
+
 RUN chown -R user:user /home/user
 RUN chmod -R 755 /home/user
 
@@ -234,6 +239,9 @@ RUN mkdir -p /home/user/Desktop && \
     cp -f /usr/share/applications/terminal.desktop /home/user/Desktop/ && \
     chmod +x /home/user/Desktop/*.desktop && \
     chown user:user /home/user/Desktop/*.desktop
+
+# Patch thunderbird desktop entry on Desktop to launch via wrapper ensuring our profile & setup run
+RUN sed -i 's|^Exec=thunderbird.*|Exec=/usr/local/bin/thunderbird-wrapper.sh|g' /home/user/Desktop/thunderbird.desktop || true
 
 RUN mkdir -p /home/user/.config /home/user/.local/share /home/user/.cache \
     && chown -R user:user /home/user/.config /home/user/.local /home/user/.cache

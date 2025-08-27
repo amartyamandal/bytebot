@@ -14,8 +14,12 @@ services:
     privileged: true
     ports:
       - "9990:9990" # desktop service & noVNC
-    environment:
+    env_file:
+      - ./.env
+    environment: # inline overrides or additions (env_file provides base)
       - DISPLAY=:0
+    volumes:
+      - tb_profile:/home/user/.thunderbird
     networks:
       - bytebot-network
 
@@ -81,6 +85,7 @@ networks:
 
 volumes:
   postgres_data:
+  tb_profile:
 
 # Usage:
 #   docker compose -f docker/docker-compose.local.yml build --no-cache
